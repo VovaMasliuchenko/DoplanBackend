@@ -11,5 +11,6 @@ public class TaskToDoRequest
 {
     public string Text { get; set; }
     public string Id_User { get; set; }
+    public bool IsCompleted { get; set; }
     public int Id { get; set; }
 }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -62,11 +63,22 @@ builder.Services.AddCors(options =>
     options.AddPolicy(MyAllowedOrigins,
                           builder =>
                           {
-                              builder.WithOrigins("http://localhost:3000")
+                              builder.AllowAnyOrigin()
                                                   .AllowAnyHeader()
                                                   .AllowAnyMethod();
                           });
 });
+
+var logFile = "D:\\University\\Doplan\\LogFiles\\LogInfoDoplan.txt";
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Error()
+    .Enrich.FromLogContext()
+    .WriteTo.File(logFile,
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+    .CreateLogger();
+
+// Додавання Serilog до фабрики логера
+builder.Logging.AddSerilog();
 
 var app = builder.Build();
 

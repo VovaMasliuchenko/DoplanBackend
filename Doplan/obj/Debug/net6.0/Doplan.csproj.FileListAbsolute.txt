@@ -74,3 +74,13 @@ D:\University\Doplan\Backend\Doplan\Doplan\obj\Debug\net6.0\Doplan.genruntimecon
 D:\University\Doplan\Backend\Doplan\Doplan\obj\Debug\net6.0\ref\Doplan.dll
 D:\University\Doplan\Backend\Doplan\Doplan\bin\Debug\net6.0\AutoMapper.dll
 D:\University\Doplan\Backend\Doplan\Doplan\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\University\Doplan\Backend\Doplan\Doplan\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+D:\University\Doplan\Backend\Doplan\Doplan\bin\Debug\net6.0\Serilog.dll
+D:\University\Doplan\Backend\Doplan\Doplan\bin\Debug\net6.0\Serilog.AspNetCore.dll
+D:\University\Doplan\Backend\Doplan\Doplan\bin\Debug\net6.0\Serilog.Extensions.Hosting.dll
+D:\University\Doplan\Backend\Doplan\Doplan\bin\Debug\net6.0\Serilog.Extensions.Logging.dll
+D:\University\Doplan\Backend\Doplan\Doplan\bin\Debug\net6.0\Serilog.Formatting.Compact.dll
+D:\University\Doplan\Backend\Doplan\Doplan\bin\Debug\net6.0\Serilog.Settings.Configuration.dll
+D:\University\Doplan\Backend\Doplan\Doplan\bin\Debug\net6.0\Serilog.Sinks.Console.dll
+D:\University\Doplan\Backend\Doplan\Doplan\bin\Debug\net6.0\Serilog.Sinks.Debug.dll
+D:\University\Doplan\Backend\Doplan\Doplan\bin\Debug\net6.0\Serilog.Sinks.File.dll

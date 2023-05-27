@@ -31,6 +31,7 @@ namespace EvenToTheMoonEF.Controllers
         public async Task<IActionResult> Add([FromBody] TaskToDoRequest request)
         {
             await _taskToDoService.InsertAsync(request);
+            _logger.LogError($"{request.Id_User} - User created todo ({request.Id}) at {DateTime.Now}");
             return Ok();
         }
 
@@ -52,6 +53,7 @@ namespace EvenToTheMoonEF.Controllers
         public async Task<IActionResult> DeleteTask(int id)
         {
             await _taskToDoService.DeleteAsync(id);
+            _logger.LogError($"Deleted todo ({id}) at {DateTime.Now}");
             return Ok();
         }
     }

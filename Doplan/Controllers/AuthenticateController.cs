@@ -21,15 +21,18 @@ namespace JWTRefreshToken.NET6._0.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
+        private readonly ILogger<AuthenticateController> _logger;
 
         public AuthenticateController(
             UserManager<User> userManager,
             IMapper mapper,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ILogger<AuthenticateController> logger)
         {
             _userManager = userManager;
             _configuration = configuration;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [AllowAnonymous]
@@ -50,7 +53,7 @@ namespace JWTRefreshToken.NET6._0.Controllers
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
-                var token = CreateToken(authClaims);
+                var token = CreateToken(authClaims); 
                 var refreshToken = GenerateRefreshToken();
 
                 _ = int.TryParse(_configuration["JWT:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
@@ -60,13 +63,18 @@ namespace JWTRefreshToken.NET6._0.Controllers
 
                 await _userManager.UpdateAsync(user);
 
+                _logger.LogError($"{HttpContext.Connection.RemoteIpAddress}({user.UserName}) - User login successful at {DateTime.Now}");
+
                 return Ok(new
                 {
-                    Token = new JwtSecurityTokenHandler().WriteToken(token),
+                    Token = new JwtSecurityTokenHandler().WriteToken(token), 
                     RefreshToken = refreshToken,
                     Expiration = token.ValidTo
                 });
             }
+
+            _logger.LogError($"{HttpContext.Connection.RemoteIpAddress}({user.UserName}) - User login failed at {DateTime.Now}");
+
             return Unauthorized();
         }
 
@@ -88,6 +96,8 @@ namespace JWTRefreshToken.NET6._0.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Auth.Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+
+            _logger.LogError($"{HttpContext.Connection.RemoteIpAddress}({user.UserName}) - User registration successful at {DateTime.Now}");
 
             return Ok(new Auth.Response { Status = "Success", Message = "User created successfully!" });
         }
@@ -111,11 +121,7 @@ namespace JWTRefreshToken.NET6._0.Controllers
                 return BadRequest("Invalid access token or refresh token");
             }
 
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
             string username = principal.Identity.Name;
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
             var user = await _userManager.FindByNameAsync(username);
 
